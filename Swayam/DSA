@@ -1,1 +1,35 @@
 
+547. Number of Provinces
+Using DFS
+class Solution {
+public:
+    void visit(vector<bool>&vis , vector<vector<int>>&adj , int i){
+         vis[i]= true;
+        for(auto x :adj[i]){
+            if(vis[x]==false){
+                visit(vis , adj , x);
+            }
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n =isConnected.size();
+        vector<vector<int>>adj(n);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(isConnected[i][j]==1 && i!=j){                
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+                }
+            }
+        }
+        vector<bool>vis(n, false);
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(vis[i]==false){
+                count++;
+               visit(vis, adj ,i);
+            }
+        }
+        return count;
+    }
+};
