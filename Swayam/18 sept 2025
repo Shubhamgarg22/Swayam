@@ -88,3 +88,62 @@ int main() {
 	cout<<solve(n);
 	return 0;
 }
+416. Partition Equal Subset Sum (8 min)
+
+class Solution {
+public:
+    bool solve(vector<int>&nums , int i ,int sum , vector<vector<int>>&dp){
+        if(i>=nums.size()) return false;
+        if(sum==0) return true;
+        if(sum<0) return false ;
+        if(dp[i][sum]!=-1){
+            return dp[i][sum];
+        }
+        return dp[i][sum]=solve(nums,i+1 ,sum,dp) || solve(nums ,i+1 ,sum-nums[i],dp);
+    }
+    bool canPartition(vector<int>& nums) {
+        int sum=0;
+        for(auto x:nums) sum+=x;
+        if(sum%2==1) return false;
+        sum/=2;
+        vector<vector<int>>dp(nums.size()+2 ,vector<int>(sum+2,-1));
+        return solve(nums , 0 , sum,dp);
+
+    }
+};
+
+62. Unique Paths(4 min)
+class Solution {
+public:
+    int solve(int m ,int n ,vector<vector<int>>&dp){
+       
+        if(m==1 || n==1){
+            return 1;
+        }
+        if(dp[m][n]!=-1) return dp[m][n];
+        return dp[m][n] = solve(m-1 , n ,dp)+solve(m , n-1,dp);
+    }
+    int uniquePaths(int m, int n) {
+        vector<vector<int>>dp(m+2 , vector<int>(n+2,-1));
+        return solve(m,n,dp);
+    }
+};
+
+63. Unique Paths II(7min)
+class Solution {
+public:
+    int solve(vector<vector<int>>& nums ,vector<vector<int>>& dp ,int i ,int j){
+        int n= nums.size() , m = nums[0].size();
+        if(i>=n  || j>=m ||nums[i][j]==1) return 0;
+        if(i==n-1 && j==m-1) return 1;
+        if(dp[i][j]!=-1) return dp[i][j];
+        return dp[i][j] =solve(nums, dp ,i+1, j) + solve(nums, dp ,i , j+1);
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& nums) {
+        vector<vector<int>>dp(nums.size() +2 , vector<int>(nums[0].size()+2,-1));
+        return solve(nums ,dp, 0 , 0);
+    }
+};
+
+
+
